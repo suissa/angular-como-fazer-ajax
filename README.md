@@ -158,5 +158,19 @@ Rodando nosso esse código no `index.html` teremos algo assim:
 
 ![Screenshot do resultado](https://cldup.com/j4VvOPOGlt-3000x3000.png)
 
+### Porém, ESSE NÃO É O JEITO CERTO!!
+
+Calma, estamos quase lá.
+
+## Service
+
+**Mas o porquê que não está certo?**
+
+Basicamente porque é trabalho do `Service` encapsular esse tipo de acesso à dados, nesse caso usando o `$http`, então vamos refatorar nosso código:
+
+
+
+
+
 
 

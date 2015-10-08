@@ -29,14 +29,11 @@
     <script src="angular.min.js"></script>
     <script>
       angular.module('Webschool', [])
-      .controller('GithubController', GithubController);
+      .controller('GithubController', GithubController)
+      .service('GithubService', GithubService);
 
-      function GithubController($scope, $http) {
-        var REQ = {
-          url: 'https://api.github.com/users/suissa',
-          method: 'GET'
-        };
-        $http(REQ)
+      function GithubController($scope, GithubService) {
+        GithubService.getUser("suissa")
           .success(function(data){
             console.log('Data: ', data);
             $scope.User = data;
@@ -45,7 +42,22 @@
             console.log('Erro: ', err);
           });
       };
-      GithubController.$inject = ['$scope', '$http'];
+
+      function GithubService(userLogin) {
+        var REQ = {
+          url: 'https://api.github.com/users/' + userLogin,
+          method: 'GET'
+        };
+
+        this.getUser = function(user) {
+          return $http(REQ);
+        };
+      }
+
+      // Dependencias
+      GithubController.$inject = ['$scope', 'GithubService'];
+      GithubService.$inject = ['$http'];
+
     </script>
   </body>
 </html>
