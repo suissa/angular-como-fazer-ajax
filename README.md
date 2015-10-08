@@ -168,9 +168,53 @@ Calma, estamos quase lá.
 
 Basicamente porque é trabalho do `Service` encapsular esse tipo de acesso à dados, nesse caso usando o `$http`, então vamos refatorar nosso código:
 
+```js
+angular.module('Webschool', [])
+.controller('GithubController', GithubController)
+.service('GithubService', GithubService);
+
+function GithubController($scope, GithubService) {
+  GithubService.getUser("suissa")
+    .success(function(data){
+      console.log('Data: ', data);
+      $scope.User = data;
+    })
+    .error(function(err){
+      console.log('Erro: ', err);
+    });
+};
+
+function GithubService($http) {
+  var REQ = {
+    url: 'https://api.github.com/users/',
+    method: 'GET'
+  };
+
+  this.getUser = function(userLogin) {
+    // recebo o login da busca e concateno na url da busca
+    REQ.url += userLogin;
+    return $http(REQ);
+  };
+}
+
+// Dependencias
+GithubController.$inject = ['$scope', 'GithubService'];
+GithubService.$inject = ['$http'];
+
+```
 
 
+Agora sim está OK, separamos o `Controller` do `Service` onde cada um deve ter uma responsabilidade única, caso não conheça esse conceito deixo aqui para você um ótimo assunto para leitura: [SOLID](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod).
 
+**SOLID** é um acrônimo para:
 
+- Single responsibility;
+- Open-closed;
+- Liskov substitution;
+- Interface segregation;
+- Dependency inversion.
 
+Aconselho fortemente a leitura sobre esse tema.
+
+Até a proxima!!! :*
 

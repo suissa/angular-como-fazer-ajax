@@ -43,13 +43,15 @@
           });
       };
 
-      function GithubService(userLogin) {
+      function GithubService($http) {
         var REQ = {
-          url: 'https://api.github.com/users/' + userLogin,
+          url: 'https://api.github.com/users/',
           method: 'GET'
         };
 
-        this.getUser = function(user) {
+        this.getUser = function(userLogin) {
+          // recebo o login da busca e concateno na url da busca
+          REQ.url += userLogin;
           return $http(REQ);
         };
       }
