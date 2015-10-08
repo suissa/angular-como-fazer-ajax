@@ -1,6 +1,4 @@
-# Como criar uma requisição AJAX do jeito certo com AngularJS?
-
-Estou escrevendo esse post pq em 1 dia 2 pessoas me pediram ajuda sobre esse tema, então bora lá escrever para todos de uma vez. :p
+Estou escrevendo esse post simples e rápido porque **hoje** 2 pessoas me pediram ajuda sobre esse tema, então bora lá escrever para todos de uma vez. :p
 
 ## Módulo
 
@@ -156,7 +154,7 @@ Com isso já estamos recebendo os dados do meu usuário no [github.com](https://
 
 Rodando nosso esse código no `index.html` teremos algo assim:
 
-![Screenshot do resultado](https://cldup.com/j4VvOPOGlt-3000x3000.png)
+{<1>}![Screenshot do resultado](https://cldup.com/j4VvOPOGlt-3000x3000.png)
 
 ### Porém, ESSE NÃO É O JEITO CERTO!!
 
@@ -217,4 +215,3 @@ Agora sim está OK, separamos o `Controller` do `Service` onde cada um deve ter 
 Aconselho fortemente a leitura sobre esse tema.
 
 Até a proxima!!! :*
-
