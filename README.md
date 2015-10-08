@@ -101,6 +101,17 @@ function GithubController($scope, $http) {
 GithubController.$inject = ['$scope', '$http']
 ```
 
+Para executarmos a requisição assíncrona do `$http` precisamos passar um [objeto de configuração](https://docs.angularjs.org/api/ng/service/$http#usage), que nomeamos de `REQ`:
+
+```js
+var REQ = {
+  url: 'https://api.github.com/users/suissa',
+  method: 'GET'
+};
+```
+
+Esse objeto para o `GET` é bem simples pois só estamos fazendo uam requisição no valor da `url`.
+
 Perceba então que após o `$http()` nós estamos encadeando as funções:
 
 - success
@@ -109,6 +120,8 @@ Perceba então que após o `$http()` nós estamos encadeando as funções:
 Que na verdade são atalhos para os *callbacks* da *[Promise](http://nomadev.com.br/angularjs-promises-promessas-o-guia-definitivo/)* do `$http`.
 
 A função `$http` sempre retornará uma *Promise* com 2 funções, uma será executada apenas se a requisição for `OK`, senão ela executará a outra, que é função de erro.
+
+Para a requisição ser `OK` seu *status code* deve ser entre `200` e `299`, qualquer outro cairá na função de erro.
 
 ```js
 angular.module('Webschool', [])
@@ -198,9 +211,56 @@ function GithubService($http) {
 // Dependencias
 GithubController.$inject = ['$scope', 'GithubService'];
 GithubService.$inject = ['$http'];
-
 ```
 
+**Fiquei sabendo agora que as funções `success` e `error` serão depreciadas, então vamos escrever como `then`**:
+
+```js
+angular.module('Webschool', [])
+.controller('GithubController', GithubController)
+.service('GithubService', GithubService);
+
+function GithubController($scope, GithubService) {
+  function success(obj){
+    console.log('Data: ', obj);
+    $scope.User = obj.data;
+  }
+  function error(err){
+      console.log('Erro: ', err);
+  }
+
+  GithubService.getUser("suissa")
+    .then(success, error);
+};
+
+function GithubService($http) {
+  var REQ = {
+    url: 'https://api.github.com/users/',
+    method: 'GET'
+  };
+
+  this.getUser = function(userLogin) {
+    // recebo o login da busca e concateno na url da busca
+    REQ.url += userLogin;
+    return $http(REQ);
+  };
+}
+
+// Dependencias
+GithubController.$inject = ['$scope', 'GithubService'];
+GithubService.$inject = ['$http'];
+```
+
+Perceba que além de eu encapsular as funções de sucesso e erro eu também precisei mudar a atribuição do retorno do sucesso, ficando assim:
+
+```js
+function success(obj){
+    console.log('Data: ', obj);
+    $scope.User = obj.data;
+  }
+```
+
+Dessa vez precisamos acessar o valor do objeto `data` e não apenas acessar o objeto direto como vinha anteriormente.
 
 Agora sim está OK, separamos o `Controller` do `Service` onde cada um deve ter uma responsabilidade única, caso não conheça esse conceito deixo aqui para você um ótimo assunto para leitura: [SOLID](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod).
 

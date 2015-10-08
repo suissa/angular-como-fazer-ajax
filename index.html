@@ -33,14 +33,17 @@
       .service('GithubService', GithubService);
 
       function GithubController($scope, GithubService) {
-        GithubService.getUser("suissa")
-          .success(function(data){
-            console.log('Data: ', data);
-            $scope.User = data;
-          })
-          .error(function(err){
+
+        function success(obj){
+          console.log('Data: ', obj);
+          $scope.User = obj.data;
+        }
+        function error(err){
             console.log('Erro: ', err);
-          });
+        }
+
+        GithubService.getUser("suissa")
+          .then(success, error);
       };
 
       function GithubService($http) {
