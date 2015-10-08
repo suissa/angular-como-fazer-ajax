@@ -1,0 +1,52 @@
+<!doctype html>
+<html data-ng-app="Webschool">
+  <head>
+    <title>Exemplo de Ajax da forma correta</title>
+    <style>
+      .user-avatar {
+        width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <p data-ng-controller='GithubController'>
+      <img class='user-avatar' data-ng-src="{{User.avatar_url}}" alt="Avatar de {{User.login}}">
+      <br />
+      <span class='user-label'>Login:</span> {{User.login}} 
+      <br />
+      <span class='user-label'>Name:</span> {{User.name}}
+      <br />
+      <span class='user-label'>Company:</span> {{User.company}}
+      <br />
+      <span class='user-label'>Blog:</span> {{User.blog}}
+      <br />
+      <span class='user-label'>Email:</span> {{User.email}}
+      <br />
+      <span class='user-label'>Location:</span> {{User.location}}
+    </p>
+
+    <script src="angular.min.js"></script>
+    <script>
+      angular.module('Webschool', [])
+      .controller('GithubController', GithubController);
+
+      function GithubController($scope, $http) {
+        var REQ = {
+          url: 'https://api.github.com/users/suissa',
+          method: 'GET'
+        };
+        $http(REQ)
+          .success(function(data){
+            console.log('Data: ', data);
+            $scope.User = data;
+          })
+          .error(function(err){
+            console.log('Erro: ', err);
+          });
+      };
+      GithubController.$inject = ['$scope', '$http'];
+    </script>
+  </body>
+</html>
+
